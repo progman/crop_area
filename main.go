@@ -16,18 +16,16 @@ func help(name string) {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 func parseArg(source string) (dx, dy int, err error) {
-	var index int
 
-
-	index = strings.Index(source, "x")
+	index := strings.Index(source, "x")
 	if index == -1 {
 		err = fmt.Errorf("invalid arg")
 		return
 	}
 
 
-	var part1 = source[0:index]
-	var part2 = source[index + 1:]
+	part1 := source[0:index]
+	part2 := source[index + 1:]
 
 
 	dx, err = strconv.Atoi(part1)
@@ -64,35 +62,35 @@ func cast(source float64) (target int) {
 	return
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-func crop_calculate(source_dx, source_dy, target_dx, target_dy int) (crop_dx, crop_dy int, err error) {
+func cropCalculate(sourceDx, sourceDy, targetDx, targetDy int) (cropDx, cropDy int, err error) {
 
 	for {
-		if target_dx > target_dy {
-			crop_dx = source_dx
-			crop_dy = cast(float64(source_dx) / (float64(target_dx) / float64(target_dy)))
+		if targetDx > targetDy {
+			cropDx = sourceDx
+			cropDy = cast(float64(sourceDx) / (float64(targetDx) / float64(targetDy)))
 
-			if crop_dy > source_dy {
-				crop_dx = cast(float64(source_dy) * (float64(target_dx) / float64(target_dy)))
-				crop_dy = source_dy
+			if cropDy > sourceDy {
+				cropDx = cast(float64(sourceDy) * (float64(targetDx) / float64(targetDy)))
+				cropDy = sourceDy
 			}
 			break
 		}
 
 
-		if target_dx < target_dy {
-			crop_dx = cast(float64(source_dy) / (float64(target_dy) / float64(target_dx)))
-			crop_dy = source_dy
+		if targetDx < targetDy {
+			cropDx = cast(float64(sourceDy) / (float64(targetDy) / float64(targetDx)))
+			cropDy = sourceDy
 
-			if crop_dx > source_dx {
-				crop_dx = source_dx
-				crop_dy = cast(float64(source_dx) * (float64(target_dy) / float64(target_dx)))
+			if cropDx > sourceDx {
+				cropDx = sourceDx
+				cropDy = cast(float64(sourceDx) * (float64(targetDy) / float64(targetDx)))
 			}
 			break
 		}
 
 
-		crop_dx = min(source_dx, source_dy)
-		crop_dy = crop_dx
+		cropDx = min(sourceDx, sourceDy)
+		cropDy = cropDx
 		break
 	}
 
@@ -101,9 +99,9 @@ func crop_calculate(source_dx, source_dy, target_dx, target_dy int) (crop_dx, cr
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 func main() {
 	var err error
-	var source_dx, source_dy int
-	var target_dx, target_dy int
-	var crop_dx,   crop_dy   int
+	var sourceDx, sourceDy int
+	var targetDx, targetDy int
+	var cropDx,   cropDy   int
 
 
 	if (len(os.Args) != 3) {
@@ -112,26 +110,26 @@ func main() {
 	}
 
 
-	source_dx, source_dy, err = parseArg(os.Args[1])
+	sourceDx, sourceDy, err = parseArg(os.Args[1])
 	if err != nil {
 		help(os.Args[0])
 		os.Exit(1)
 	}
 
 
-	target_dx, target_dy, err = parseArg(os.Args[2])
+	targetDx, targetDy, err = parseArg(os.Args[2])
 	if err != nil {
 		help(os.Args[0])
 		os.Exit(1)
 	}
 
 
-	crop_dx, crop_dy, err = crop_calculate(source_dx, source_dy, target_dx, target_dy)
+	cropDx, cropDy, err = cropCalculate(sourceDx, sourceDy, targetDx, targetDy)
 	if err != nil {
 		fmt.Printf("ERROR: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Printf("%dx%d\n", crop_dx, crop_dy)
+	fmt.Printf("%dx%d\n", cropDx, cropDy)
 
 
 	os.Exit(0)
