@@ -15,7 +15,7 @@ func help(name string) {
 	fmt.Printf("example: %s 3637x2433       2560x1440\n", name)
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-func parseArg(source string) (dx, dy int, err error) {
+func parseGeometry(source string) (dx, dy int, err error) {
 
 	index := strings.Index(source, "x")
 	if index == -1 {
@@ -110,14 +110,14 @@ func main() {
 	}
 
 
-	sourceDx, sourceDy, err = parseArg(os.Args[1])
+	sourceDx, sourceDy, err = parseGeometry(os.Args[1])
 	if err != nil {
 		help(os.Args[0])
 		os.Exit(1)
 	}
 
 
-	targetDx, targetDy, err = parseArg(os.Args[2])
+	targetDx, targetDy, err = parseGeometry(os.Args[2])
 	if err != nil {
 		help(os.Args[0])
 		os.Exit(1)
