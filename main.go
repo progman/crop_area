@@ -62,7 +62,7 @@ func cast(source float64) (target int) {
 	return
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-func cropCalculate(sourceDx, sourceDy, targetDx, targetDy int) (cropDx, cropDy int, err error) {
+func cropArea(sourceDx, sourceDy, targetDx, targetDy int) (cropDx, cropDy, cropX, cropY int, err error) {
 
 	for {
 		if targetDx > targetDy {
@@ -94,6 +94,28 @@ func cropCalculate(sourceDx, sourceDy, targetDx, targetDy int) (cropDx, cropDy i
 		break
 	}
 
+
+	for {
+		if sourceDx == cropDx {
+			cropX = 0
+			cropY = (sourceDy - cropDy) / 2
+			break
+		}
+
+
+		if sourceDy == cropDy {
+			cropX = (sourceDx - cropDx) / 2
+			cropY = 0
+			break
+		}
+
+
+		cropX = 0
+		cropY = 0
+		break
+	}
+
+
 	return
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -102,6 +124,7 @@ func main() {
 	var sourceDx, sourceDy int
 	var targetDx, targetDy int
 	var cropDx,   cropDy   int
+	var cropX,    cropY    int
 
 
 	if (len(os.Args) != 3) {
@@ -124,12 +147,12 @@ func main() {
 	}
 
 
-	cropDx, cropDy, err = cropCalculate(sourceDx, sourceDy, targetDx, targetDy)
+	cropDx, cropDy, cropX, cropY, err = cropArea(sourceDx, sourceDy, targetDx, targetDy)
 	if err != nil {
 		fmt.Printf("ERROR: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Printf("%dx%d\n", cropDx, cropDy)
+	fmt.Printf("%dx%d+%d+%d\n", cropDx, cropDy, cropX, cropY)
 
 
 	os.Exit(0)
