@@ -50,4 +50,5 @@ Crop area has aspect ratio like target geometry.
 ### Step 3 — Crop and scale
 
 You can crop source image via crop area and scale to target geometry.
+
 For example you can use: magick input.jpg -crop 997x561+251+0 output.jpg
